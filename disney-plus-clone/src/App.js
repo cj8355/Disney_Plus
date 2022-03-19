@@ -9,6 +9,7 @@ import {
   Link
 } from "react-router-dom";
 import Detail from './components/Detail';
+import Login from './components/Login';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         </Route> */}
         <Route path="/detail" element={<Detail />} /> 
         <Route path="/" element={<Home />} /> 
+        <Route path="/login" element={<Login />} /> 
         {/* <Route path="/">
           <Home />
         </Route> */}
