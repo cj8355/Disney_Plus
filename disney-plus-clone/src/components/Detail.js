@@ -1,14 +1,42 @@
 import React from 'react';
 import styled from "styled-components";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import db from '../firebase';
+
 
 function Detail() {
+    const { id } = useParams();
+    const [movie, setMovie] = useState();
+
+    console.log("fdxc", id);
+
+    useEffect(() => {
+        db.collection("movies")
+        .doc(id)
+        .get()
+        .then((doc) => {
+            if(doc.exists) {
+                setMovie(doc.data());
+                console.log("this");
+                console.log("doc data",doc.data);
+            } else {
+                console.log("that");
+            }
+        })
+    }, []);
+
+    console.log("movie",movie);
+
   return (
+      <>
+      { movie &&
     <Container>
-        <Background>
-            <img src='/images/simpsons-background2.jfif' />
+        <Background key={id}>
+            <img src={movie.backgroundImg} /> 
         </Background>
         <ImgTitle>
-        <img src='/images/simpsons-title.jfif' />
+        <img src={movie.titleImg}  />
         </ImgTitle>
         <Controls>
             <PlayButton>
@@ -29,12 +57,13 @@ function Detail() {
         </Controls>
 
         <SubTitle>
-            subtitle 2222
+            {movie.subTitle}
         </SubTitle>
         <Desc>
-            This is decriptions fgrronifl description description description description
+            {movie.Desc}
         </Desc>
-        </Container>
+        </Container>}
+        </>
   )
 }
 
