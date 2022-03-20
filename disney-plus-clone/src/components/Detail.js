@@ -1,13 +1,16 @@
 import React from 'react';
-import styled from "styled-components";
+import styled, { ThemeProvider } from "styled-components";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import db from '../firebase';
+import ReactPlayer from 'react-player';
+import theme from 'styled-theming';
 
 
 function Detail() {
     const { id } = useParams();
     const [movie, setMovie] = useState();
+    const [displayTrailer,setDisplayTrailer] = useState(false);
 
     console.log("fdxc", id);
 
@@ -28,6 +31,9 @@ function Detail() {
 
     console.log("movie",movie);
 
+  
+   
+
   return (
       <>
       { movie &&
@@ -43,10 +49,30 @@ function Detail() {
                 <img src='/images/play-icon-black.png' />
                 <span>PLAY</span>
             </PlayButton>
-            <TrailerButton>
+            <TrailerButton onClick={() => {setDisplayTrailer(true)}}>
                 <img src='/images/play-icon-white.png' />
                 <span>Trailer</span>
+
             </TrailerButton>
+
+            { displayTrailer && 
+            <ThemeProvider theme={{ mode: 'none' }}>
+            <PlayerWrapper >
+                <CloseBtn onClick={() => {setDisplayTrailer(false)}}>
+                    <p>X</p>
+                </CloseBtn>
+            <ReactPlayer
+            url={movie.trailer}
+            playing={true} 
+            width='70vw'
+            height='60vh'
+            controls={true}
+            />
+            </PlayerWrapper>
+
+            </ThemeProvider>
+            
+            }
             <AddButton>
                 <span>+</span>
             </AddButton>
@@ -74,6 +100,7 @@ const Container = styled.div`
     min-height: calc(100vh - 70px);
     padding: 0 calc(3.5vw + 5px);
     position: relative;
+    overflow: hidden;
 `;
 
 
@@ -85,6 +112,7 @@ const Background = styled.div`
     right: 0;
     z-index: -1;
     opacity: 0.8;
+    
 
     img {
         width: 100%;
@@ -174,3 +202,28 @@ const Desc = styled.div`
     color: rgb(249, 249, 249);
     max-width: 600px;
 `;
+
+const CloseBtn = styled.button`
+    color: white;
+    background: transparent;
+    border: none;
+    font-weight: 800;
+    font-size: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    
+`;
+
+
+const PlayerWrapper = styled.div`
+    display: ${(d) => (d.displayPlayer ? 'none' : 'block')};
+        
+        position: fixed;
+        justify-content: space-between;
+        overflow: hidden;
+        left: 15%;
+
+`;
+
