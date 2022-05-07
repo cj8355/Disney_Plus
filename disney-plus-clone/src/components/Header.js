@@ -64,7 +64,9 @@ const Header = () => {
 
   return (
     <Nav>
+        <Link to={`/`}>
         <Logo src="/images/logo.svg" />
+        </Link>
         { !userName ? (
             <LoginContainer>
             <Login onClick={signIn}>Login</Login> 

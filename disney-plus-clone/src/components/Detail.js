@@ -11,6 +11,7 @@ function Detail() {
     const { id } = useParams();
     const [movie, setMovie] = useState();
     const [displayTrailer,setDisplayTrailer] = useState(false);
+    const [play,setPlay] = useState(false);
 
     console.log("fdxc", id);
 
@@ -45,7 +46,7 @@ function Detail() {
         <img src={movie.titleImg}  />
         </ImgTitle>
         <Controls>
-            <PlayButton>
+            <PlayButton onClick={() => {setPlay(true)}}>
                 <img src='/images/play-icon-black.png' />
                 <span>PLAY</span>
             </PlayButton>
@@ -54,6 +55,25 @@ function Detail() {
                 <span>Trailer</span>
 
             </TrailerButton>
+
+            { play && 
+            <ThemeProvider theme={{ mode: 'none' }}>
+            <PlayerWrapper >
+                <CloseBtn onClick={() => {setPlay(false)}}>
+                    <p>X</p>
+                </CloseBtn>
+            <ReactPlayer
+            url={movie.playMovie}
+            playing={true} 
+            width='70vw'
+            height='60vh'
+            controls={true}
+            />
+            </PlayerWrapper>
+
+            </ThemeProvider>
+            
+            }
 
             { displayTrailer && 
             <ThemeProvider theme={{ mode: 'none' }}>
